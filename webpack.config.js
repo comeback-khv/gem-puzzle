@@ -21,6 +21,7 @@ module.exports = {
   },
   devServer: {
     port: 8000,
+    open: true,
     compress: true,
     hot: true,
     static: {
@@ -33,8 +34,8 @@ module.exports = {
         test: /\.((c|sa|sc)ss)$/i,
         use: [
           MiniCssExtractPlugin.loader,
+       //   "style-loader",
           "css-loader",
-          //"style-loader",
           "sass-loader",
         ],
       },
