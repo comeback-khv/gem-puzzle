@@ -128,29 +128,27 @@ function dragAndDrop() {
           }
         }
         let isElementOnRightEdge =
-          (Array.from(tiles).findIndex(
-            (tile) => tile.textContent == tilesArrayShuffled[i - 1]
-          ) +
-            1) %
+          tilesArrayShuffled.findIndex(
+            (tile) => tile == tilesArrayShuffled[i - 1]
+          ) %
+            4 ==
+          3;
+        let isElementOnLeftEdge =
+          tilesArrayShuffled.findIndex(
+            (tile) => tile == tilesArrayShuffled[i + 1]
+          ) %
             4 ==
           0;
-        let isElementOnLeftEdge =
-          (Array.from(tiles).findIndex(
-            (tile) => tile.textContent == tilesArrayShuffled[i + 1]
-          ) +
-            1) %
-            4 ==
-          1;
-        if (!isElementOnRightEdge) {
+        if (!isElementOnLeftEdge) {
           adjacentElements.leftElement = Array.from(tiles).find(
+            (tile) => tile.textContent == tilesArrayShuffled[i + 1]
+          );
+        } else adjacentElements.leftElement = null;
+        if (!isElementOnRightEdge) {
+          adjacentElements.rightElement = Array.from(tiles).find(
             (tile) => tile.textContent == tilesArrayShuffled[i - 1]
           );
-        }
-        if (!isElementOnLeftEdge) {
-          adjacentElements.rightElement = Array.from(tiles).find(
-            (tile) => tile.textContent == tilesArrayShuffled[i + 1]
-          );
-        }
+        } else adjacentElements.rightElement = null;
         adjacentElements.topElement = Array.from(tiles).find(
           (tile) => tile.textContent == tilesArrayShuffled[i - 4]
         );
@@ -168,6 +166,9 @@ function dragAndDrop() {
   makeDraggable();
   function dragStart() {
     activeTile = this;
+    if (!activeTile.hasAttribute("draggable")) {
+      return;
+    }
     this.classList.add("active");
   }
   function dragOver(e) {
@@ -176,6 +177,9 @@ function dragAndDrop() {
     }
   }
   function drop() {
+    if (!activeTile.hasAttribute("draggable")) {
+      return;
+    }
     const activeTileX = activeTile.style.left;
     const activeTileY = activeTile.style.top;
     const replaceableTileX = replaceableTile.style.left;
@@ -209,6 +213,9 @@ function dragAndDrop() {
     tile.addEventListener("dragstart", dragStart);
     tile.addEventListener("dragover", dragOver);
     tile.addEventListener("drop", drop);
+    tile.addEventListener("click", dragStart);
+    // tile.addEventListener("click", dragOver);
+    tile.addEventListener("click", drop);
   });
 }
 
