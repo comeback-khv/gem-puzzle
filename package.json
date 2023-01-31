@@ -1,7 +1,9 @@
 {
   "name": "project",
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build-dev": "webpack",
+    "build-prod": "webpack --node-env=production",
+    "clear": "rd /s /q dist",
     "start": "webpack serve",
     "updates": "npx npm-check-updates -u"
   },

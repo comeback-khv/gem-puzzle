@@ -3,8 +3,11 @@ const htmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 
+const mode = process.env.NODE_ENV || "development";
+const devMode = mode === "development";
+
 module.exports = {
-  mode: "production",
+  mode,
   entry: {
     filename: path.resolve(__dirname, "src/index.js"),
   },
@@ -33,8 +36,7 @@ module.exports = {
       {
         test: /\.((c|sa|sc)ss)$/i,
         use: [
-          MiniCssExtractPlugin.loader,
-       //   "style-loader",
+          devMode ? "style-loader" : MiniCssExtractPlugin.loader,
           "css-loader",
           "sass-loader",
         ],

@@ -2,6 +2,7 @@ import "./index.scss";
 import "./index.html";
 
 const body = document.querySelector(".body");
+const container = document.createElement("div");
 const buttons = document.createElement("div");
 const stats = document.createElement("div");
 const tiles = document.createElement("div");
@@ -12,13 +13,15 @@ let tilesArrayStarting;
 let tilesArrayShuffled;
 
 buttons.classList.add("buttons");
-body.appendChild(buttons);
+container.classList.add("container");
+body.appendChild(container);
+container.appendChild(buttons);
 stats.classList.add("stats");
-body.appendChild(stats);
+container.appendChild(stats);
 tiles.classList.add("tiles");
-body.appendChild(tiles);
+container.appendChild(tiles);
 sizes.classList.add("sizes");
-body.appendChild(sizes);
+container.appendChild(sizes);
 
 function createButton(name) {
   const button = document.createElement("button");
@@ -34,7 +37,7 @@ function createStat(name) {
   stat.classList.add(name);
   statTitle.classList.add(`${name}__title`);
   statText.classList.add(`${name}__text`);
-  statTitle.textContent = name;
+  statTitle.textContent = name + ":";
   stats.appendChild(stat);
   stat.appendChild(statTitle);
   stat.appendChild(statText);
@@ -69,16 +72,27 @@ function createTile(size) {
 }
 
 function createSizePanel() {
-  frameSize.textContent = "Frame size";
-  otherSizes.textContent = "Other sizes";
+  const frameSizeTitle = document.createElement("div");
+  const frameSizeText = document.createElement("div");
+  const otherSizesTitle = document.createElement("div");
+  const otherSizesText = document.createElement("div");
+  frameSize.appendChild(frameSizeTitle);
+  frameSize.appendChild(frameSizeText);
+  otherSizes.appendChild(otherSizesTitle);
+  otherSizes.appendChild(otherSizesText);
+  frameSizeTitle.textContent = "Frame size:";
+  otherSizesTitle.textContent = "Other sizes:";
   frameSize.classList.add("frame-size");
   otherSizes.classList.add("other-size");
+  frameSizeTitle.classList.add("frame-size__title");
+  otherSizesTitle.classList.add("other-size__title");
   sizes.appendChild(frameSize);
   sizes.appendChild(otherSizes);
 }
 
 function createOtherSizes(type) {
   const size = document.createElement("div");
+  size.classList.add("other-size__text");
   size.classList.add(type);
   size.textContent = type;
   otherSizes.appendChild(size);
@@ -86,7 +100,7 @@ function createOtherSizes(type) {
 
 function createCurrentSize(current) {
   const size = document.createElement("div");
-  size.classList.add("current-size");
+  size.classList.add("frame-size__text");
   size.textContent = current;
   frameSize.appendChild(size);
 }
@@ -118,6 +132,8 @@ function dragAndDrop() {
   const replaceableTile = Array.from(tiles).find(
     (tile) => tile.textContent == 0
   );
+  replaceableTile.style.backgroundImage = "none";
+  replaceableTile.style.backgroundColor = "#fff";
 
   function makeDraggable() {
     tilesArrayShuffled.forEach((tile, i) => {
@@ -214,7 +230,6 @@ function dragAndDrop() {
     tile.addEventListener("dragover", dragOver);
     tile.addEventListener("drop", drop);
     tile.addEventListener("click", dragStart);
-    // tile.addEventListener("click", dragOver);
     tile.addEventListener("click", drop);
   });
 }
