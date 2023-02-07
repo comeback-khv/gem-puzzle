@@ -11,6 +11,7 @@ const frameSize = document.createElement("div");
 const otherSizes = document.createElement("div");
 let tilesArrayStarting;
 let tilesArrayShuffled;
+let size = 4;
 
 buttons.classList.add("buttons");
 container.classList.add("container");
@@ -26,6 +27,7 @@ container.appendChild(sizes);
 function createButton(name) {
   const button = document.createElement("button");
   button.classList.add("btn");
+  button.classList.add(name);
   button.textContent = name;
   buttons.appendChild(button);
 }
@@ -43,7 +45,7 @@ function createStat(name) {
   stat.appendChild(statText);
 }
 
-function createTile(size) {
+function createTile() {
   const numberOfTiles = size * size;
   let distanceX = 0;
   let distanceY = 0;
@@ -112,7 +114,7 @@ function createStartPage() {
   createButton("results");
   createStat("moves");
   createStat("time");
-  createTile(4);
+  createTile();
   createSizePanel();
   createOtherSizes("3x3");
   createOtherSizes("4x4");
@@ -129,6 +131,7 @@ function dragAndDrop() {
   let activeTile;
   let adjacentElements = {};
   const tiles = document.querySelectorAll(".tile");
+  const moves = document.querySelector(".moves__text");
   const replaceableTile = Array.from(tiles).find(
     (tile) => tile.textContent == 0
   );
@@ -187,15 +190,19 @@ function dragAndDrop() {
     }
     this.classList.add("active");
   }
+
   function dragOver(e) {
     if (this == replaceableTile) {
       e.preventDefault();
     }
   }
+
   function drop() {
     if (!activeTile.hasAttribute("draggable")) {
       return;
     }
+    count++;
+    moves.textContent = count;
     const activeTileX = activeTile.style.left;
     const activeTileY = activeTile.style.top;
     const replaceableTileX = replaceableTile.style.left;
@@ -206,7 +213,6 @@ function dragAndDrop() {
     const replaceableTileIndex = tilesArrayShuffled.indexOf(
       Number(replaceableTile.textContent)
     );
-
     tilesArrayShuffled.splice(
       activeTileNumberIndex,
       1,
@@ -244,3 +250,70 @@ function isFinished() {
     console.log("Game is finished");
   }
 }
+
+// moves
+const moves = document.querySelector(".moves__text");
+let count = 0;
+moves.textContent = count;
+
+// time
+const time = document.querySelector(".time__text");
+let hours = 0;
+let minutes = 0;
+let seconds = 0;
+const zeroTime = `0${hours}:0${minutes}:0${seconds}`;
+time.textContent = zeroTime;
+
+function startTime() {
+  seconds++;
+  seconds = seconds < 10 ? String(seconds).padStart(2, "0") : seconds;
+  minutes = minutes < 10 ? String(minutes).padStart(2, "0") : minutes;
+  hours = hours < 10 ? String(hours).padStart(2, "0") : hours;
+  if (seconds == 60) {
+    seconds = 0;
+    minutes++;
+  }
+  if (minutes == 60) {
+    minutes = 0;
+    hours++;
+  }
+  time.textContent = `${hours}:${minutes}:${seconds}`;
+}
+
+// start
+const start = document.querySelector(".start");
+let timeStart;
+
+function reset() {
+  count = 0;
+  hours = 0;
+  minutes = 0;
+  seconds = 0;
+  const tiles = document.querySelectorAll(".tile");
+  moves.textContent = count;
+  tiles.forEach((tile) => {
+    tile.remove();
+  });
+}
+
+start.addEventListener("click", () => {
+  reset();
+  createTile();
+  dragAndDrop();
+  clearInterval(timeStart);
+  time.textContent = zeroTime;
+  timeStart = setInterval(startTime, 1000);
+});
+
+// stop
+const stop = document.querySelector(".stop");
+stop.addEventListener("click", () => {
+  stop.classList.toggle("resume");
+  if (stop.classList.contains("resume")) {
+    stop.textContent = "resume";
+    clearInterval(timeStart);
+  } else {
+    stop.textContent = "stop";
+    timeStart = setInterval(startTime, 1000);
+  }
+});
