@@ -1,7 +1,8 @@
 .body {
   margin: 0;
   background-image: url(./assets/img/landscape.jpg);
-  background-size: contain;
+  background-size: cover;
+  background-position: center;
 }
 
 .container {
