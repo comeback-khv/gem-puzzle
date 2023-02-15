@@ -61,14 +61,14 @@ function createTile() {
     tile.textContent = tilesArrayShuffled[i];
     tile.style.top = distanceY + "px";
     tile.style.left = distanceX + "px";
-    distanceX += 100;
+    distanceX +=70;
     if (tile.textContent == 0) {
       tile.style.fontSize = 0;
     }
     tiles.appendChild(tile);
     if ((i + 1) % size == 0 && i !== 0) {
       distanceX = 0;
-      distanceY += 100;
+      distanceY += 70;
     }
   }
 }
@@ -150,13 +150,13 @@ function dragAndDrop() {
           tilesArrayShuffled.findIndex(
             (tile) => tile == tilesArrayShuffled[i - 1]
           ) %
-            4 ==
-          3;
+            size ==
+          size - 1;
         let isElementOnLeftEdge =
           tilesArrayShuffled.findIndex(
             (tile) => tile == tilesArrayShuffled[i + 1]
           ) %
-            4 ==
+            size ==
           0;
         if (!isElementOnLeftEdge) {
           adjacentElements.leftElement = Array.from(tiles).find(
@@ -169,10 +169,10 @@ function dragAndDrop() {
           );
         } else adjacentElements.rightElement = null;
         adjacentElements.topElement = Array.from(tiles).find(
-          (tile) => tile.textContent == tilesArrayShuffled[i - 4]
+          (tile) => tile.textContent == tilesArrayShuffled[i - size]
         );
         adjacentElements.bottomElement = Array.from(tiles).find(
-          (tile) => tile.textContent == tilesArrayShuffled[i + 4]
+          (tile) => tile.textContent == tilesArrayShuffled[i + size]
         );
         for (const key in adjacentElements) {
           if (adjacentElements[key]) {
@@ -316,4 +316,25 @@ stop.addEventListener("click", () => {
     stop.textContent = "stop";
     timeStart = setInterval(startTime, 1000);
   }
+});
+
+// change size
+const currentSize = document.querySelectorAll(".other-size__text");
+
+function changeSize() {
+  const tiles = document.querySelector(".tiles");
+  size = Number(event.target.textContent[0]);
+  tiles.style.width = size * 70 + "px";
+  tiles.style.height = size * 70 + "px";
+}
+
+currentSize.forEach((size) => {
+  size.addEventListener("click", (event) => {
+    changeSize();
+    reset();
+    createTile();
+    dragAndDrop();
+    clearInterval(timeStart);
+    time.textContent = zeroTime;
+  });
 });
