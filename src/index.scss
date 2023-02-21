@@ -52,6 +52,7 @@
 }
 
 .time {
+  margin-right: 20px;
   display: flex;
   color: white;
   font-size: 30px;
@@ -59,6 +60,20 @@
 
 .time__title {
   margin-right: 10px;
+}
+
+.volume {
+  width: 45px;
+  height: 44px;
+  background-image: url(./assets/img/volume-on.png);
+  background-size: cover;
+}
+
+.volume--muted {
+  width: 45px;
+  height: 44px;
+  background-image: url(./assets/img/volume-off.png);
+  background-size: cover;
 }
 
 .tiles {

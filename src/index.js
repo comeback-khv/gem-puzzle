@@ -1,5 +1,6 @@
 import "./index.scss";
 import "./index.html";
+import click from "./assets/sounds/click.wav";
 
 const body = document.querySelector(".body");
 const container = document.createElement("div");
@@ -45,6 +46,12 @@ function createStat(name) {
   stat.appendChild(statText);
 }
 
+function createVolume() {
+  const volume = document.createElement("btn");
+  volume.classList.add("volume");
+  stats.appendChild(volume);
+}
+
 function createTile() {
   const numberOfTiles = size * size;
   let distanceX = 0;
@@ -61,7 +68,7 @@ function createTile() {
     tile.textContent = tilesArrayShuffled[i];
     tile.style.top = distanceY + "px";
     tile.style.left = distanceX + "px";
-    distanceX +=70;
+    distanceX += 70;
     if (tile.textContent == 0) {
       tile.style.fontSize = 0;
     }
@@ -114,6 +121,7 @@ function createStartPage() {
   createButton("results");
   createStat("moves");
   createStat("time");
+  createVolume();
   createTile();
   createSizePanel();
   createOtherSizes("3x3");
@@ -237,6 +245,7 @@ function dragAndDrop() {
     tile.addEventListener("drop", drop);
     tile.addEventListener("click", dragStart);
     tile.addEventListener("click", drop);
+    tile.addEventListener("click", addClickSound);
   });
 }
 
@@ -338,3 +347,16 @@ currentSize.forEach((size) => {
     time.textContent = zeroTime;
   });
 });
+
+// add sound
+const volume = document.querySelector(".volume");
+volume.addEventListener("click", () => {
+  volume.classList.toggle("volume--muted");
+});
+
+function addClickSound() {
+  if (!volume.classList.contains("volume--muted")) {
+    const audio = new Audio(click);
+    audio.play();
+  } else audio.stop();
+}
