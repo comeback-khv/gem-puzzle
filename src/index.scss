@@ -6,9 +6,6 @@
   background-repeat: no-repeat;
 }
 
-.body--not-started {
-}
-
 .container {
   max-width: 1600px;
   min-height: 100vh;
@@ -32,7 +29,6 @@
   border-radius: 5px;
   border: solid 0.5px;
   font-size: 30px;
-  background-color: rgb(144, 28, 144);
   color: white;
   background-image: url(./assets/img/button.png);
   background-size: cover;
@@ -105,12 +101,12 @@
   border: solid 0.5px;
   border-radius: 12.5px;
   font-size: 30px;
-  background-color: rgb(144, 28, 144);
   color: white;
   box-sizing: border-box;
   background-image: url(./assets/img/stone.png);
   background-size: cover;
   z-index: -1;
+  transition: 0.3s;
 }
 
 .tile--active {

@@ -144,7 +144,9 @@ function dragAndDrop() {
     (tile) => tile.textContent == 0
   );
   replaceableTile.style.backgroundImage = "none";
-  replaceableTile.style.backgroundColor = "#fff";
+  replaceableTile.style.backgroundColor = "transparent";
+  replaceableTile.style.zIndex = "-1";
+  replaceableTile.style.border = "none";
 
   function makeDraggable() {
     tilesArrayShuffled.forEach((tile, i) => {
