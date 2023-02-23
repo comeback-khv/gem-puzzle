@@ -27,8 +27,8 @@ container.appendChild(sizes);
 
 function createButton(name) {
   const button = document.createElement("button");
-  button.classList.add("btn");
-  button.classList.add(name);
+  button.classList.add("button");
+  button.classList.add("buttons__" + name);
   button.textContent = name;
   buttons.appendChild(button);
 }
@@ -47,7 +47,7 @@ function createStat(name) {
 }
 
 function createVolume() {
-  const volume = document.createElement("btn");
+  const volume = document.createElement("button");
   volume.classList.add("volume");
   stats.appendChild(volume);
 }
@@ -290,7 +290,7 @@ function startTime() {
 }
 
 // start
-const start = document.querySelector(".start");
+const start = document.querySelector(".buttons__start");
 let timeStart;
 
 function reset() {
@@ -312,17 +312,19 @@ start.addEventListener("click", () => {
   clearInterval(timeStart);
   time.textContent = zeroTime;
   timeStart = setInterval(startTime, 1000);
+  addGameStatus();
+  showPopup();
 });
 
 // stop
-const stop = document.querySelector(".stop");
+const stop = document.querySelector(".buttons__stop");
 stop.addEventListener("click", () => {
-  stop.classList.toggle("resume");
-  if (stop.classList.contains("resume")) {
-    stop.textContent = "resume";
+  if (body.classList.contains("body--active")) {
+    //можно тут сделать isstarted
+    removeGameStatus();
     clearInterval(timeStart);
   } else {
-    stop.textContent = "stop";
+    addGameStatus();
     timeStart = setInterval(startTime, 1000);
   }
 });
@@ -345,6 +347,9 @@ currentSize.forEach((size) => {
     dragAndDrop();
     clearInterval(timeStart);
     time.textContent = zeroTime;
+    removeGameStatus();
+    stop.classList.remove("buttons__stop--active");
+    stop.textContent = "stop";
   });
 });
 
@@ -360,3 +365,58 @@ function addClickSound() {
     audio.play();
   } else audio.stop();
 }
+
+// popup
+function createPopup() {
+  const popup = document.createElement("div");
+  const popupTitle = document.createElement("div");
+  const popupText = document.createElement("div");
+  popupTitle.textContent = "Start game first";
+  popupText.textContent = "OK";
+  popup.classList.add("popup");
+  popupTitle.classList.add("popup__title");
+  popupText.classList.add("popup__text");
+  container.appendChild(popup);
+  popup.appendChild(popupTitle);
+  popup.appendChild(popupText);
+}
+
+createPopup();
+
+const popup = document.querySelector(".popup");
+const popupText = document.querySelector(".popup__text");
+
+function showPopup() {
+  const tile = document.querySelectorAll(".tile");
+  if (!tile[0].classList.contains("tile--active")) {
+    //тоже будет в функции исстартед
+    popup.classList.add("popup--active");
+  }
+}
+tiles.addEventListener("click", showPopup);
+
+// game status
+
+// function isGameStarted {
+//   return tile[0].classList.contains("tile--active");
+//!body.classList.contains("body--active");
+// }
+
+function addGameStatus() {
+  const tile = document.querySelectorAll(".tile");
+  tile.forEach((tile) => tile.classList.add("tile--active"));
+  body.classList.add("body--active");
+  stop.classList.add("buttons__stop--active");
+  stop.textContent = "stop";
+}
+
+function removeGameStatus() {
+  const tile = document.querySelectorAll(".tile");
+  tile.forEach((tile) => tile.classList.remove("tile--active"));
+  body.classList.remove("body--active");
+  stop.textContent = "resume";
+}
+
+popupText.addEventListener("click", () => {
+  popup.classList.toggle("popup--active");
+});
