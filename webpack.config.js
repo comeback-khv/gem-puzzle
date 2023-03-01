@@ -1,20 +1,20 @@
-const path = require("path");
-const htmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
-const mode = process.env.NODE_ENV || "development";
-const devMode = mode === "development";
+const mode = process.env.NODE_ENV || 'development';
+const devMode = mode === 'development';
 
 module.exports = {
   mode,
   entry: {
-    filename: path.resolve(__dirname, "src/index.js"),
+    filename: path.resolve(__dirname, 'src/index.js'),
   },
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "[name][contenthash].js",
-    assetModuleFilename: "assets/[name][ext]",
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name][contenthash].js',
+    assetModuleFilename: 'assets/[name][ext]',
     clean: true,
   },
   performance: {
@@ -28,7 +28,7 @@ module.exports = {
     compress: true,
     hot: true,
     static: {
-      directory: path.join(__dirname, "dist"),
+      directory: path.join(__dirname, 'dist'),
     },
   },
   module: {
@@ -36,34 +36,34 @@ module.exports = {
       {
         test: /\.((c|sa|sc)ss)$/i,
         use: [
-          devMode ? "style-loader" : MiniCssExtractPlugin.loader,
-          "css-loader",
-          "sass-loader",
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
         ],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif|ico)$/i,
-        type: "asset/resource",
+        type: 'asset/resource',
         generator: {
-          filename: "assets/images/[name][ext]",
+          filename: 'assets/images/[name][ext]',
         },
       },
       {
         test: /\.(mp3|wav)$/i,
-        type: "asset/resource",
+        type: 'asset/resource',
         generator: {
-          filename: "assets/sounds/[name][ext]",
+          filename: 'assets/sounds/[name][ext]',
         },
       },
       {
         test: /\.html$/i,
-        loader: "html-loader",
+        loader: 'html-loader',
       },
     ],
   },
   optimization: {
     minimizer: [
-      "...",
+      '...',
       new ImageMinimizerPlugin({
         minimizer: {
           implementation: ImageMinimizerPlugin.imageminMinify,
@@ -71,16 +71,16 @@ module.exports = {
             // Lossless optimization with custom option
             // Feel free to experiment with options for better result for you
             plugins: [
-              ["gifsicle", { interlaced: true }],
-              ["jpegtran", { progressive: true }],
-              ["optipng", { optimizationLevel: 5 }],
+              ['gifsicle', { interlaced: true }],
+              ['jpegtran', { progressive: true }],
+              ['optipng', { optimizationLevel: 5 }],
               // Svgo configuration here https://github.com/svg/svgo#configuration
               [
-                "svgo",
+                'svgo',
                 {
                   plugins: [
                     {
-                      name: "removeViewBox",
+                      name: 'removeViewBox',
                       active: false,
                     },
                   ],
@@ -93,12 +93,12 @@ module.exports = {
     ],
   },
   plugins: [
-    new htmlWebpackPlugin({
-      filename: "index.html",
-      template: "src/index.html",
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'src/index.html',
     }),
     new MiniCssExtractPlugin({
-      filename: "[name][contenthash].css",
+      filename: '[name][contenthash].css',
     }),
   ],
 };

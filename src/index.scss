@@ -1,19 +1,15 @@
 .body {
-  margin: 0;
-  background-image: url(./assets/img/landscape.jpg);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.container {
+  margin: 0 auto;
   max-width: 1600px;
   min-height: 100vh;
-  margin: 0 auto;
   padding: 0px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-image: url(./assets/img/landscape.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .buttons {
@@ -73,8 +69,11 @@
 .volume {
   width: 45px;
   height: 44px;
+  background: none;
+  border: none;
   background-image: url(./assets/img/volume-on.png);
   background-size: cover;
+  cursor: pointer;
 }
 
 .volume--muted {
@@ -142,7 +141,7 @@
   margin-right: 0;
 }
 
-.popup {
+.popup-start {
   display: none;
   position: absolute;
   height: 100%;
@@ -151,19 +150,46 @@
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-.popup--active {
+.popup-start--active {
   display: block;
 }
 
-.popup__title {
+.popup-start__title {
   padding-top: 100px;
   margin-bottom: 30px;
   font-size: 60px;
   text-align: center;
 }
 
-.popup__text {
+.popup-start__text {
   font-size: 60px;
   text-align: center;
   cursor: pointer;
+}
+
+.popup-results {
+  display: none;
+  position: absolute;
+  // height: 100%;
+  // width: 100%;
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.popup-results--active {
+  display: block;
+}
+
+.popup-results__line {
+  display: flex;
+}
+
+.popup-results__header {
+  display: flex;
+}
+
+.popup-results__element {
+  margin-right: 25px;
+  font-size: 30px;
+  color: green;
 }
